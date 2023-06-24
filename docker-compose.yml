@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+
+  react:
+    build:
+     context: ./front
+     dockerfile: Dockerfile_React
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo_db
+    networks:
+      - api_network
+
+  mongo_db:
+    build: 
+      context: ./back
+      dockerfile: Dockerfile_mongodb
+    networks:
+      - api_network
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+      - MONGO_INITDB_DATABASE=dataprod
+
+  api:
+    build:
+     context: ./back
+     dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongo_db
+    env_file:
+      - ./back/env.txt
+    networks:
+      - api_network
+      
+
+networks:
+  api_network:
+    driver: bridge
