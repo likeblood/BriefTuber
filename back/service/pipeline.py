@@ -1,19 +1,20 @@
 import os
-from pytube import YouTube
 import re
 import json
+
+from pytube import YouTube
+
 from google.cloud import speech_v1p1beta1 as speech
 from google.cloud import storage
 from google.oauth2 import service_account
+
 
 class Video2TextPipeline:
 
     def __init__(self, video_link: str) -> None:
         self.video_link: str = video_link
-        #как правильно задать путь к json API ключу?
     
     def sanitize_filename(self, filename):
-        # Заменить недопустимые символы в имени файла
         filename = re.sub(r'[\/:*?"<>|]', '', filename)
         return filename
 
