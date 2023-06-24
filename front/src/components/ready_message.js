@@ -2,9 +2,18 @@ import React from "react";
 
 
 const TextMessage = ({status, message}) => {
-    if (status !== 'finished') {
+    if (status === 'in_progress' || status === 'uploaded') {
         return(
-            <p>{JSON.stringify(message[0]).slice(1, -1)}</p>
+            <div className="spiner">
+                <span className="spinner__animation"></span>
+                <span className="spinner__info">Загрузка</span>
+            </div>
+            
+        )
+    }
+    else if(status === 'failed') {
+        return (
+            <p className="error">TEST</p>
         )
     }
     else {
@@ -13,8 +22,9 @@ const TextMessage = ({status, message}) => {
             {message.map((val) => {
                 return(
                     <div className="one_message">
-                        <p className="article">[{JSON.stringify(val.timecode).slice(1, -1)}] {JSON.stringify(val.text).slice(1, -1)}</p>
-                        <img className='images' src={JSON.stringify(val.image).slice(1, -1)} alt="PNG MISSED"/>
+                        <h1 className="title">[{JSON.stringify(val.timecode).slice(1, -1)}] {JSON.stringify(val.title).slice(1, -1)}</h1>
+                        <p className="text">{JSON.stringify(val.text).slice(1, -1)}</p>
+                        <img className='images' src={'data:image/png;base64,' + JSON.stringify(val.image).slice(3, -3)}  alt="PNG MISSED"/>
                     </div>
                 )
             })}

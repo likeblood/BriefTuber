@@ -30,3 +30,8 @@ class VideoUploadFormat(BaseModel):
     video_end_time: str = Field(..., description="Video end time (hh:mm:ss or END)")
     annotation_length: str = Field(..., description="Annotation length (count or ANY)")
     article_length: str = Field(..., description="Article length (count or ANY)")
+    
+class VideoResponceFormat(BaseModel):
+    preprocess_status: str = Field(..., description="Video preprocess status")
+    id: str = Field(..., description="Video id")
+    ready_message: list = Field(..., description="Video preprocess status")

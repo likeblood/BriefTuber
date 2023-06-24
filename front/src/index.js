@@ -18,7 +18,7 @@ const intervalBack = setInterval (() => {
             video_data[0].preprocess_status = JSON.stringify(responce.data.preprocess_status).slice(1, -1)
             video_data[0].ready_message = responce.data.ready_message
             app.render(<NewVideoForm />)
-            if (video_data[0].status === 'finished') {
+            if (video_data[0].preprocess_status === 'finished') {
                 clearInterval(intervalBack)
             }
         })
