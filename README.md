@@ -1,4 +1,4 @@
-# Youtube GPT service
+# BfiefTuber service
 
 ### Enviroments
 
@@ -25,6 +25,12 @@ docker-compose up -d
 
 ```
 http://host:8000/docs#
+```
+
+### Frontend
+
+```
+http://host:3000
 ```
 
 ### TODO:
