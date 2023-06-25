@@ -7,12 +7,13 @@ body {
     justify-content: center;
     margin: 0;
     padding: 0;
-    background-color: rgb(36, 36, 36);
-    color: white;
+    background: rgb(0,0,0);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(42,42,42,1) 20%, rgba(50,50,50,1) 50%, rgba(42,42,42,1) 80%, rgba(0,0,0,1) 100%);
     font-family: 'Optima, sans-serif';
 }
 
 div.new_form {
+    background-image: none;
     display: flex;
     align-items: center;
     align-content: center;
@@ -23,28 +24,55 @@ div.new_form {
 }
 
 form.main_form {
-    width: 100%;
-    color: white;
+    width: 90%;
 }
 
 .field {
     display: block;
     box-sizing: border-box;
-    font-size: 18px;
     padding: 20px;
-    line-height: 20px;
+    line-height: 18px;
     margin-bottom: 15px;
-    margin-top: 30px;
     outline: none;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     width: 100%;
+    color: rgb(50, 50, 50);
     background-color: white;
     flex-direction: column;
+    font-family: 'Optima, sans-serif';
+    font-size: 20px;
+}
+
+.field:hover{
+    box-shadow: rgba(200,200,200, 1) 0px 0px 10px;
+}
+
+input.button {
+    margin-top: 50px;
+    color: rgb(50, 50, 50);
+    cursor: pointer;
+}
+
+input.button:hover {
+    box-shadow: rgba(200,200,200, 1) 0px 0px 10px;
+}
+
+input.button:active{
+    background-color: rgb(180, 180, 180);;
 }
 
 select.field {
+    text-align: center;
+    font-family: 'Optima, sans-serif';
+    font-size: 20px;
+    cursor: pointer;
+    color: rgb(50, 50, 50);
     appearance: none;
+}
+
+select.field:hover{
+    box-shadow: rgba(200,200,200, 1) 0px 0px 10px;
 }
 
 div.ready_message {
@@ -54,19 +82,22 @@ div.ready_message {
     justify-content: center;
     text-align: center;
     font-size: 30px;
+    color: white;
+}
+
+p.links {
+    margin-top: 50px;
+    font-size: 35px;
 }
 
 a.links {
-    margin-top: 80px;
-    margin-bottom: 50px;
-    text-decoration: none;
     color: white;
-    box-sizing: border-box;
+    text-decoration: none;
+
 }
 
-img.images {
-    height: 500px;
-    margin-bottom: 100px;
+a.links:hover {
+    color: rgb(200, 200, 200);
 }
 
 p.desription {
@@ -74,11 +105,14 @@ p.desription {
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-size: 20px;
+    font-size: 25px;
+    margin-top: 30px;
+    color: white;
 }
 
-p.timecode {
-    margin-top: 100px;
+p.first_text{
+    margin-top: 20px;
+    color: white;
 }
 
 div.drop-down_list{
@@ -88,6 +122,7 @@ div.drop-down_list{
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    cursor: context-menu;
 }
 
 input.drop-down_list {
@@ -95,14 +130,74 @@ input.drop-down_list {
     width: 48%;
     margin-left: 1%;
     margin-right: 1%;
-    font-size: 18px;
     padding: 20px;
     line-height: 20px;
-    margin-bottom: 15px;
-    margin-top: 15px;
     outline: none;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     background-color: white;
+    color: rgb(50, 50, 50);
     flex-direction: row;
+    font-family: 'Optima, sans-serif';
+    font-size: 20px;
+}
+
+input.drop-down_list:hover {
+    box-shadow: rgba(200,200,200, 1) 0px 0px 10px;
+}
+
+div.spiner {
+    position: relative;
+    top: 15%;
+    left: 0;
+}
+
+.spinner__animation {
+    display: inline-block;
+    border-radius: 50%;
+    width: 15vw;
+    height: 15vw;
+    border-top: 15px solid rgba(0, 0, 0, 0.2);
+    border-right: 15px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 15px solid rgba(0, 0, 0, 0.2);
+    border-left: 15px solid white;
+    animation: loading-spinner 1.5s infinite linear;
+}
+
+
+.spinner__info {
+    display: block;
+    padding-top: 5px;
+    color: white;
+    font-size: 2vw;
+}
+
+
+@keyframes loading-spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+p.text{
+    text-align: left;
+    font-size: 35px;
+    margin-left: 5vw;
+    margin-right: 2vw;
+    margin-bottom: 5vh;
+}
+
+h1.title {
+    font-size: 50px;
+}
+
+img.images{
+    width: 30vw;
+    margin-left: 35vw;
+    margin-right: 35vw;
+    margin-top: 50px;
+    margin-bottom: 70px;
+}
+
+div.one_message {
+    font-family: 'Optima, sans-serif';
 }

@@ -7,7 +7,7 @@ from service.api.exceptions import GeneralLogicError
 from service.creds import MONGO_URI
 from service.enums import VideoPreprocessStatus
 from service.log import app_logger
-from service.models import VideoObj, VideoUploadFormat
+from service.models import VideoObj, VideoUploadFormat, VideoResponceFormat
 from service.mongo import MongoORM
 
 router = APIRouter()
@@ -61,15 +61,19 @@ async def upload_video(
         video_obj = VideoObj(
             video_link=video.video_link,
             preprocess_status=VideoPreprocessStatus.UPLOADED,
-            ready_message=['Идет обработка, ожидайте...'],
+            ready_message=['Working'],
             video_start_time=video.video_start_time,
             video_end_time=video.video_end_time,
             annotation_length=video.annotation_length,
             article_length=video.article_length
         )
         video_id = MONGO_CONN.add_video(video_obj)
-        return JSONResponse({'video_link': video.video_link, 'preprocess_status': VideoPreprocessStatus.IN_PROGRESS.value,
-                         'id': video_id, 'ready_message': video_obj.ready_message})
+        video_responce_obj = VideoResponceFormat(
+            preprocess_status=video_obj.preprocess_status.value,
+            id=video_id,
+            ready_message=video_obj.ready_message
+        )
+        return JSONResponse({'preprocess_status': video_responce_obj.preprocess_status, 'id': video_responce_obj.id, 'ready_message': video_responce_obj.ready_message})
     except Exception as e:
         app_logger.exception(e)
         raise GeneralLogicError()
@@ -94,8 +98,12 @@ async def get_video_status(
     try:
         app_logger.info("Get video status {%s}", video_id)
         video = MONGO_CONN.get_video(video_id)
-        return JSONResponse({'video_link': video.video_link, 'preprocess_status': video.preprocess_status.value,
-                         'id': video_id, 'ready_message': video.ready_message})
+        video_responce_obj = VideoResponceFormat(
+            preprocess_status=video.preprocess_status.value,
+            id=video_id,
+            ready_message=video.ready_message
+        )
+        return JSONResponse({'preprocess_status': video_responce_obj.preprocess_status, 'id': video_responce_obj.id, 'ready_message': video_responce_obj.ready_message})
     except Exception as e:
         app_logger.exception(e)
         raise GeneralLogicError()

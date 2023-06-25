@@ -49,13 +49,13 @@ class NewVideoForm extends React.Component{
             return (
             <div className="new_form">
                 <form className="main_form">
-                    <p className="desription">Вставьте ссылку на YouTube видео</p>
-                    <input type="text" className="field" onChange={event => this.setState({textData: event.target.value})} placeholder="Введите ссылку на видео или ID" value={this.state.textData}/>
+                    <p className="desription first_text">Вставьте ссылку на YouTube видео</p>
+                    <input type="text" className="field" onChange={event => this.setState({textData: event.target.value})} placeholder="Введите ссылку на видео" value={this.state.textData}/>
 
                     <p className="desription">Выберите диапозон видео</p>
                     <select className="field" onChange={event => this.setState({timeRange: event.target.value})}>
-                        <option value="ALL_VIDEO">Всё видео</option>
-                        <option value="INTERVAL">Введите интервал</option>
+                        <option className="test" value="ALL_VIDEO">Всё видео</option>
+                        <option value="INTERVAL">Интервал</option>
                     </select>
                     {this.state.timeRange === "INTERVAL" 
                     ?
@@ -69,26 +69,26 @@ class NewVideoForm extends React.Component{
                     <p className="desription">Выберите длинну аннотации</p>
                     <select className="field" onChange={event => this.setState({lengthAnnotation: event.target.value})}>
                         <option value="NO_LIMITS">Без ограничений</option>
-                        <option value="LENGTH">Введите кол-во символов</option>
+                        <option value="LENGTH">Ограниченная</option>
                     </select>
                     {this.state.lengthAnnotation === "LENGTH" 
                     ?
-                    <input className="field" onChange={event => this.setState({lengthAnnotationData: event.target.value})} placeholder="Введите кол-во символов"></input>
+                    <input className="field" onChange={event => this.setState({lengthAnnotationData: event.target.value})} placeholder="Введите максимальное кол-во символов"></input>
                     :
                     <div></div>}
 
                     <p className="desription">Выберите длинну статьи</p>
                     <select className="field" onChange={event => this.setState({lengthArticle: event.target.value})}>
                         <option value="NO_LIMITS">Без ограничений</option>
-                        <option value="LENGTH">Введите кол-во символов</option>
+                        <option value="LENGTH">Ограниченная</option>
                     </select>
                     {this.state.lengthArticle === "LENGTH" 
                     ?
-                    <input className="field" onChange={event => this.setState({lengthArticleData: event.target.value})} placeholder="Введите кол-во символов"></input>
+                    <input className="field" onChange={event => this.setState({lengthArticleData: event.target.value})} placeholder="Введите максимальное кол-во символов"></input>
                     :
                     <div></div>}
 
-                    <input type="button" className="field" onClick={this.inputClick} value="Отправить" />
+                    <input type="button" className="field button" onClick={this.inputClick} value="Отправить" />
                 </form>
             </div>
             )
@@ -96,8 +96,8 @@ class NewVideoForm extends React.Component{
         else {
             return (
                 <div className="ready_message">
-                    <a href={video_data[0].video_link} className="links">Ссылка на видео - {video_data[0].video_link}</a>
-                    <TextMessage status={video_data[0].status} message={video_data[0].ready_message}/>
+                        <p className="links">Ссылка на видео - <a href={video_data[0].video_link} className="links">{video_data[0].video_link}</a></p>
+                    <TextMessage status={video_data[0].preprocess_status} message={video_data[0].ready_message}/>
                 </div>
             )
         }
