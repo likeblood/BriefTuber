@@ -9,7 +9,7 @@ from service.enums import VideoPreprocessStatus
 from service.log import app_logger
 from service.models import VideoObj, VideoUploadFormat, VideoResponceFormat
 from service.mongo import MongoORM
-
+from service.images.Message import NewMessage
 router = APIRouter()
 
 
@@ -55,13 +55,13 @@ async def upload_video(
     Returns:
         str: id of the added video
     """
-    app_logger.info("Upload video {%s}", video)
     try:
         app_logger.info("Upload video {%s}", video)
+        responce_obj = await NewMessage()
         video_obj = VideoObj(
             video_link=video.video_link,
-            preprocess_status=VideoPreprocessStatus.UPLOADED,
-            ready_message=['Working'],
+            preprocess_status=VideoPreprocessStatus.FINISHED,
+            ready_message=responce_obj,
             video_start_time=video.video_start_time,
             video_end_time=video.video_end_time,
             annotation_length=video.annotation_length,
@@ -73,7 +73,7 @@ async def upload_video(
             id=video_id,
             ready_message=video_obj.ready_message
         )
-        return JSONResponse({'preprocess_status': video_responce_obj.preprocess_status, 'id': video_responce_obj.id, 'ready_message': video_responce_obj.ready_message})
+        return JSONResponse({'preprocess_status': VideoPreprocessStatus.UPLOADED.value, 'id': video_responce_obj.id, 'ready_message': video_responce_obj.ready_message})
     except Exception as e:
         app_logger.exception(e)
         raise GeneralLogicError()
