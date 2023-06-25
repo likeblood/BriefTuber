@@ -1,3 +1,6 @@
+import os
+import threading
+
 from typing import Tuple
 
 from fastapi import APIRouter, Depends, FastAPI
@@ -9,11 +12,12 @@ from service.enums import VideoPreprocessStatus
 from service.log import app_logger
 from service.models import VideoObj, VideoUploadFormat, VideoResponceFormat
 from service.mongo import MongoORM
+from service.pipeline import Video2ArticlePipeline
 
 router = APIRouter()
 
 
-def build_connections() -> Tuple[MongoORM]:
+def build_connections() -> Tuple[MongoORM, Video2ArticlePipeline]:
     """
     Build connections to DB and web3.
 
@@ -22,10 +26,16 @@ def build_connections() -> Tuple[MongoORM]:
     """
     mongo_conn = MongoORM(MONGO_URI)
     mongo_conn.database = 'videos'
-    return mongo_conn
+
+    pipeline = Video2ArticlePipeline(
+        youtube_link=None, # than replace in upload_video
+        json_key_path=os.getenv('GOOGLE_APPLICATION_CREDENTIALS'),
+        openai_api_key=os.getenv('OPENAI_API_KEY')
+    )
+    return mongo_conn, pipeline
 
 
-MONGO_CONN = build_connections()
+MONGO_CONN, PIPELINE = build_connections()
 
 
 @router.get(
@@ -55,9 +65,9 @@ async def upload_video(
     Returns:
         str: id of the added video
     """
-    app_logger.info("Upload video {%s}", video)
+    app_logger.info("Upload video %s", video)
     try:
-        app_logger.info("Upload video {%s}", video)
+        app_logger.info("Upload video %s", video)
         video_obj = VideoObj(
             video_link=video.video_link,
             preprocess_status=VideoPreprocessStatus.UPLOADED,
@@ -67,12 +77,24 @@ async def upload_video(
             annotation_length=video.annotation_length,
             article_length=video.article_length
         )
+
+        app_logger.info("Add video %s", video)
         video_id = MONGO_CONN.add_video(video_obj)
         video_responce_obj = VideoResponceFormat(
             preprocess_status=video_obj.preprocess_status.value,
             id=video_id,
             ready_message=video_obj.ready_message
         )
+
+        app_logger.info("Run pipeline %s", video)
+        PIPELINE.link = video.video_link
+        PIPELINE._video_id = video_id
+        PIPELINE._orm = MONGO_CONN
+
+        # run pipeline in separate thread
+        thread = threading.Thread(target=PIPELINE.run)
+        thread.start()
+
         return JSONResponse({'preprocess_status': video_responce_obj.preprocess_status, 'id': video_responce_obj.id, 'ready_message': video_responce_obj.ready_message})
     except Exception as e:
         app_logger.exception(e)
@@ -96,7 +118,7 @@ async def get_video_status(
         VideoPreprocessStatus: video preprocess status
     """
     try:
-        app_logger.info("Get video status {%s}", video_id)
+        app_logger.info("Get video status %s", video_id)
         video = MONGO_CONN.get_video(video_id)
         video_responce_obj = VideoResponceFormat(
             preprocess_status=video.preprocess_status.value,

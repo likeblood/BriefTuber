@@ -83,3 +83,4 @@ rsa==4.9
 six==1.16.0
 tqdm==4.65.0
 urllib3==1.26.16
+opencv-python==4.7.0.72

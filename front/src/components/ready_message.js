@@ -24,7 +24,7 @@ const TextMessage = ({status, message}) => {
                     <div className="one_message">
                         <h2 className="title">[{JSON.stringify(val.timecode).slice(1, -1)}] {JSON.stringify(val.title).slice(1, -1)}</h2>
                         <p className="text">{JSON.stringify(val.text).slice(1, -1)}</p>
-                        <img className='images' src={'data:image/png;base64,' + JSON.stringify(val.image).slice(3, -3)}  alt="PNG MISSED"/>
+                        <img className='images' src={'data:image/jpg;base64,' + JSON.stringify(val.image).slice(3, -3)}  alt="JPG MISSED"/>
                     </div>
                 )
             })}

@@ -1,10 +1,12 @@
 from typing import Dict
+from typing import List
 
 from bson import BSON
 from bson.objectid import ObjectId
 from pymongo import MongoClient
 
 from service.models import VideoObj
+from service.enums import VideoPreprocessStatus
 from service.mongo.abc_orm import ORM
 from service.mongo.codecs import codec_options
 
@@ -62,3 +64,16 @@ class MongoORM(ORM):
         encoded_dict = collection.find_one({'_id': ObjectId(video_id)})
         decoded_dict = BSON.decode(BSON.encode(encoded_dict, codec_options=codec_options))
         return VideoObj(**decoded_dict)
+
+    def update_video(self, video_id: str, ready_message: List[Dict], status: VideoPreprocessStatus) -> None:
+        """
+        Update video in the database. ready_message is a list of dicts with keys:
+
+        Args:
+            video (VideoObj): video to update
+        """
+        collection = self._client[self._database]['videos']
+        collection.update_one(
+            {'_id': ObjectId(video_id)},
+            {'$set': {'ready_message': ready_message, 'preprocess_status': status.value}}
+        )
