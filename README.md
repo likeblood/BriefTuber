@@ -2,26 +2,18 @@
 
 ### Enviroments
 
-`service/mongo/init.sh` - replace user for orders db
+`service/mongo/init.sh` - replace user for items db
 
-`env.txt`:
-- TBD
+`back/env.txt`:
+- OPENAI_API_KEY
 
 ### How to run?
-
-Makefile:
-
-```
-make run
-```
-
-Docker:
 
 ```
 docker-compose up -d
 ```
 
-### Docs
+### Back Docs
 
 ```
 http://host:8000/docs#
@@ -34,5 +26,6 @@ http://host:3000
 ```
 
 ### TODO:
-- [ ] Mongo volume
+- [ ] Mongo volume to upload images
 - [ ] API auth
+- [ ] Front admin panel
