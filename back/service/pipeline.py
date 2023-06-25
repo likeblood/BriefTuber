@@ -260,7 +260,7 @@ class Video2ArticlePipeline:
         timecodes = []
         for time in data:
             timecode = time['timecode'].split(':')
-            timecode_final = int(timecode[0]) * 60 + int(timecode[1])
+            timecode_final = int(timecode[0]) * 60 + int(timecode[1]) + 3
             timecodes.append(timecode_final)
 
         extract_frames(video_path=video, output_directory='',
@@ -291,5 +291,5 @@ class Video2ArticlePipeline:
         prep_text = self.gpt_prompt(text)
         result = self.text_to_data(prep_text)
         result = self.add_images(video, result)
-        self._orm.update_video(video_id=self._video_id, data=result, status=VideoPreprocessStatus.FINISHED)
+        self._orm.update_video(video_id=self._video_id, ready_message=result, status=VideoPreprocessStatus.FINISHED)
         return result
