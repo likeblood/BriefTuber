@@ -180,20 +180,20 @@ div.spiner {
 
 p.text{
     text-align: left;
-    font-size: 35px;
+    font-size: 20px;
     margin-left: 5vw;
     margin-right: 2vw;
     margin-bottom: 5vh;
 }
 
-h1.title {
-    font-size: 50px;
+h2.title {
+    font-size: 35px;
 }
 
 img.images{
-    width: 30vw;
-    margin-left: 35vw;
-    margin-right: 35vw;
+    width: 50vw;
+    margin-left: 25vw;
+    margin-right: 25vw;
     margin-top: 50px;
     margin-bottom: 70px;
 }
