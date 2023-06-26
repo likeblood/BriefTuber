@@ -38,18 +38,18 @@ def split_text_into_sections(text: str, max_tokens: int = 7500) -> List[str]:
     Returns:
         List[str]: list of sections
     """
-    paragraphs = text.split("\n\n")
+    lemmas = text.split(" ")
     sections = []
     current_section = ""
 
-    for paragraph in paragraphs:
-        if len(current_section) + len(paragraph) <= max_tokens:
-            current_section += "\n\n" + paragraph
-        else:
+    for lemma in lemmas:
+        current_section += (lemma + " ")
+        if len(current_section) >= max_tokens:
             sections.append(current_section)
-            current_section = paragraph
+            current_section = ""
 
-    sections.append(current_section)
+    if not len(current_section):
+        return [text]
 
     return sections
 
@@ -191,7 +191,7 @@ class Video2ArticlePipeline:
             for word_info in result.alternatives[0].words:
                 word = word_info.word
                 start_time = word_info.start_time.total_seconds()
-                transcript += f'{word} ({int(start_time//60)}:{int(start_time%60)}) '
+                transcript += f'{word}({int(start_time//60)}:{int(start_time%60)}) '
 
         return transcript
 
